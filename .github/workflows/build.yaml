@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'release-*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Set version to last Git hash (for develop)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          mvn versions:set -DnewVersion=$(date +%Y-%m-%d)-$(git rev-parse --short HEAD)
+          mvn clean install
+
+      - name: Set version to last Git tag (for releases)
+        if: startsWith(github.ref, 'refs/heads/release-')
+        run: |
+          mvn versions:set -DnewVersion=$(git describe --tags)
+          mvn clean install
