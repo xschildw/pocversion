@@ -1,0 +1,52 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: 'Release branch'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.release_branch }}
+
+      - id: extract_release
+        run: |
+          branch_name="${{ github.event.inputs.release_branch }}"
+          if [[ $branch_name =~ ^release-([0-9]+)$ ]]; then
+            release_number=${BASH_REMATCH[1]}
+            echo "release_number=$release_number" >> $GITHUB_ENV
+          else
+            echo "Invalid branch name format"
+            exit 1
+          fi
+
+      - id: push_tag
+        run: |
+          tag_name="${release_number}.1"
+          git tag -a $tag_name -m stack-${release_number}-prod
+          git push origin $tag_name
+
+      - id: merge_branch
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout develop
+          git merge --no-ff ${{ github.event.inputs.release_branch }} -m "Merge release branch ${{ github.event.inputs.release_branch }} into develop"
+          git push origin develop
+
+      - id: create_branch
+        run: |
+          next_release_number=$((release_number + 1))
+          new_branch="release-${next_release_number}"
+          git checkout -b $new_branch
+          git push origin $new_branch
+
+          new_tag="${next_release_number}.0"
+          git tag -a $new_tag -m stack-${next_release_number}-staging
+          git push origin $new_tag
