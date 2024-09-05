@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
+
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.release_branch }}
+          fetch-depth: 0
+
 
       - id: extract_release
         run: |
