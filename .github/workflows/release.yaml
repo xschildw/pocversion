@@ -36,25 +36,24 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - id: push_tag
+      - id: push_prod_tag
         run: |
           tag_name="${release_number}.1"
           git tag -a $tag_name -m stack-${release_number}-prod
           git push origin $tag_name
 
-      - id: merge_branch
-        run: |
-          git checkout develop
-          git merge --no-ff ${{ github.event.inputs.release_branch }} -m "Merge release branch ${{ github.event.inputs.release_branch }} into develop"
-          git push origin develop
+#      - id: merge_release_branch
+#        run: |
+#          git checkout develop
+#          git merge --no-ff ${{ github.event.inputs.release_branch }} -m "Merge release branch ${{ github.event.inputs.release_branch }} into develop"
+#          git push origin develop
 
-      - id: create_branch
+      - id: create_new_release_branch
         run: |
           next_release_number=$((release_number + 1))
           new_branch="release-${next_release_number}"
           git checkout -b $new_branch
-          git push origin $new_branch
 
           new_tag="${next_release_number}.0"
           git tag -a $new_tag -m stack-${next_release_number}-staging
-          git push origin $new_tag
+          git push origin $new_branch --follow-tags
