@@ -45,6 +45,7 @@ jobs:
 
       - id: create_new_release_branch
         run: |
+          git checkout develop
           next_release_number=$((release_number + 1))
           new_branch="release-${next_release_number}"
           git checkout -b $new_branch
