@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -22,11 +25,13 @@ jobs:
       - name: Set version to last Git hash (for develop)
         if: github.ref == 'refs/heads/develop'
         run: |
+          git rev-parse --short HEAD
           mvn versions:set -DnewVersion=$(date +%Y-%m-%d)-$(git rev-parse --short HEAD)
           mvn clean install
 
       - name: Set version to last Git tag (for releases)
         if: startsWith(github.ref, 'refs/heads/release-')
         run: |
+          git describe --tags
           mvn versions:set -DnewVersion=$(git describe --tags)
           mvn clean install
