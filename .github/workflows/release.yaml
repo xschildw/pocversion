@@ -37,12 +37,6 @@ jobs:
           git tag -a $tag_name -m stack-${release_number}-prod
           git push origin $tag_name
 
-#      - id: merge_release_branch
-#        run: |
-#          git checkout develop
-#          git merge --no-ff ${{ github.event.inputs.release_branch }} -m "Merge release branch ${{ github.event.inputs.release_branch }} into develop"
-#          git push origin develop
-
       - id: create_new_release_branch
         run: |
           git checkout develop
