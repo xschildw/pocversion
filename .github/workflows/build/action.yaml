@@ -17,12 +17,17 @@ runs:
         java-version: '11'
         distribution: 'corretto'
         cache: maven
-    - name: Version pom.xml
+    - name: debug
       shell: bash
       run: |
-        if [ "${{ inputs.pom_version }}" != "" ]; then
-          mvn versions:set -DnewVersion=${{ inputs.pom_version }}
-        fi
-    - name: Build with Maven
-      shell: bash
-      run: echo mvn -B ${{ inputs.mvn_goal }} --file pom.xml
+        echo ${{ inputs.pom_version }}
+        echo ${{ inputs.mvn_goal }}
+#    - name: Version pom.xml
+#      shell: bash
+#      run: |
+#        if [ "${{ inputs.pom_version }}" != "" ]; then
+#          mvn versions:set -DnewVersion=${{ inputs.pom_version }}
+#        fi
+#    - name: Build with Maven
+#      shell: bash
+#      run: echo mvn -B ${{ inputs.mvn_goal }} --file pom.xml
