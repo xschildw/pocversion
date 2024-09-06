@@ -19,8 +19,10 @@ runs:
         cache: maven
     - name: Version pom.xml
       shell: bash
-      if: ${{ inputs.pom_version != '' }}
-      run: mvn versions:set -DnewVersion=${{ inputs.pom_version }}
+      run: |
+        if [ "${{ inputs.pom_version }}" != "" ]; then
+          mvn versions:set -DnewVersion=${{ inputs.pom_version }}
+        fi
     - name: Build with Maven
       shell: bash
       run: echo mvn -B ${{ inputs.mvn_goal }} --file pom.xml
