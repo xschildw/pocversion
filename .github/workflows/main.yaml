@@ -10,6 +10,14 @@ on:
 
 jobs:
 
+  call-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug
+        run: |
+          echo "Event ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+
   call-build:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'create' }}
