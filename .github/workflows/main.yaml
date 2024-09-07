@@ -37,8 +37,6 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          echo Running job!
-#      - uses: ./.github/workflows/build
-#        with:
-#          mvn_goal: package
+      - uses: ./.github/workflows/build
+        with:
+          mvn_goal: package
