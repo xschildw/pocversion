@@ -47,12 +47,8 @@ jobs:
           new_tag="${next_release_number}.0"
           git tag -a $new_tag -m stack-${next_release_number}-staging
           git push origin $new_branch --follow-tags
-#         Save the version for next step
           echo "pomversion=$new_tag" >> $GITHUB_ENV
 
-#     Start the build here since it cannot be started from the event
-#     Alternative is to run the last push above with a PAT that has the repo as scope
-#     git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
       - id: build_new_release_branch
         uses: ./.github/workflows/build
         with:
