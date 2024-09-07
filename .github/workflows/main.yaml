@@ -5,8 +5,6 @@ on:
     branches: [develop, release-**]
   pull_request:
     branches: [develop, release-**]
-  create:
-    branches: [develop, release-**]
 
 jobs:
 
@@ -20,7 +18,7 @@ jobs:
 
   call-build:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' || github.event_name == 'create' }}
+    if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v4
         with:
