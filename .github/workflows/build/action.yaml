@@ -1,13 +1,15 @@
 name: core_build
 description: 'Build SWC'
-#inputs:
-#  mvn_goal:
-#    description: the goal that maven needs to run
-#    required: true
-#  pom_version:
-#    description: the version for the generated artifact
-#    required: false
-#    default: ''
+
+inputs:
+  mvn_goal:
+    description: the goal that maven needs to run
+    required: true
+  pom_version:
+    description: the version for the generated artifact
+    required: false
+    default: ''
+
 runs:
   using: 'composite'
   steps:
@@ -18,12 +20,12 @@ runs:
         distribution: 'corretto'
         cache: maven
 
-#    - name: Version pom.xml
-#      shell: bash
-#      run: |
-#        if [ "${{ inputs.pom_version }}" != "" ]; then
-#          mvn versions:set -DnewVersion=${{ inputs.pom_version }}
-#        fi
+    - name: Version pom.xml
+      shell: bash
+      run: |
+        if [ "${{ inputs.pom_version }}" != "" ]; then
+          mvn versions:set -DnewVersion=${{ inputs.pom_version }}
+        fi
 
     - name: Build with Maven
       shell: bash
