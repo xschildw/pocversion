@@ -29,4 +29,4 @@ runs:
 
     - name: Build with Maven
       shell: bash
-      run: echo mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml
