@@ -12,7 +12,7 @@ jobs:
 
   call-build:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'create' }}
     steps:
       - uses: actions/checkout@v4
         with:
