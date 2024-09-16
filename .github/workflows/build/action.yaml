@@ -20,7 +20,7 @@ runs:
         java-version: '21'
         distribution: 'corretto'
         cache: maven
-        server_id: serverid
+        server-id: serverid
         server-username: ${{ env.MAVEN_USERNAME }}
         server-password: ${{ env.MAVEN_USERPWD }}
 
